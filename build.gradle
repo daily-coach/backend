@@ -1,0 +1,58 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'nu.studer.jooq' version '2.0.9'
+}
+
+group 'br.com.rodrigocardoso'
+version '1.0.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+mainClassName = 'br.com.rodrigocardoso.Main'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile "com.sparkjava:spark-core:2.7.2"
+    compile "com.google.code.gson:gson:2.8.2"
+    compile 'org.slf4j:slf4j-simple:1.7.21'
+    compile 'org.jooq:jooq:3.10.4'
+    compile 'com.zaxxer:HikariCP:3.1.0'
+    compile 'javax.persistence:persistence-api:1.0.2'
+    compile 'org.postgresql:postgresql:9.4-1206-jdbc42'
+    jooqRuntime 'postgresql:postgresql:9.1-901.jdbc4'
+}
+
+jooq {
+    version '3.10.4'
+    my_db(sourceSets.main) {
+        jdbc {
+            driver = 'org.postgresql.Driver'
+            url = 'jdbc:postgresql://localhost:5432/table_teste'
+            user = 'postgres'
+            password = 'admin'
+        }
+        generator {
+            name = 'org.jooq.util.DefaultGenerator'
+            strategy {
+                name = 'org.jooq.util.DefaultGeneratorStrategy'
+            }
+            database {
+                name = 'org.jooq.util.postgres.PostgresDatabase'
+                inputSchema = 'public'
+            }
+            generate {
+                relations = true
+                deprecated = false
+                records = true
+                fluentSetters = true
+            }
+            target {
+                packageName = 'br.com.rodrigocardoso.database'
+            }
+        }
+    }
+}
