@@ -23,7 +23,7 @@ public class JwtUtils {
         return JWT.create()
                 .withIssuer(issuer)
                 .withSubject(login)
-                .withExpiresAt(Date.from(LocalDateTime.now().plusSeconds(30).atZone(ZoneId.systemDefault()).toInstant()))
+                .withExpiresAt(Date.from(LocalDateTime.now().plusDays(7).atZone(ZoneId.systemDefault()).toInstant()))
                 .sign(algorithm);
     }
 

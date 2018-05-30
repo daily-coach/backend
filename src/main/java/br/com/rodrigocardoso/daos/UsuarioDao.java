@@ -25,7 +25,6 @@ public class UsuarioDao extends AbstractDao<UsuariosRecord, br.com.rodrigocardos
                 .select()
                 .from(U)
                 .where(U.EMAIL.eq(login.getEmail()))
-                .and(U.SENHA.eq(login.getSenha()))
                 .and(U.ACTIVE.eq(true))
                 .fetchOne();
         if (record == null) {
@@ -41,6 +40,15 @@ public class UsuarioDao extends AbstractDao<UsuariosRecord, br.com.rodrigocardos
                     .from(U)
                     .where(U.EMAIL.eq(email))
                     .fetchOne(0, int.class) > 0;
+    }
+
+    public boolean hasActiveUser(String email) {
+        return  dsl
+                .selectCount()
+                .from(U)
+                .where(U.EMAIL.eq(email))
+                .and(U.ACTIVE.eq(true))
+                .fetchOne(0, int.class) > 0;
     }
 
 }

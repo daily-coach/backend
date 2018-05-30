@@ -37,7 +37,7 @@ public class UsuarioEndpont extends AbstractEndpoint<Usuario, UsuarioDao> {
 
                 Usuario usuario = fromJson(req.body(), Usuario.class);
                 byte[] salt = PasswordUtils.getNextSalt();
-                byte[] hash = PasswordUtils.hash(usuario.getSenha().toCharArray(), Base64.decodeBase64(salt));
+                byte[] hash = PasswordUtils.hash(usuario.getSenha().toCharArray(), salt);
                 usuario.setSalt(Base64.encodeBase64String(salt));
                 usuario.setSenha(Base64.encodeBase64String(hash));
 
@@ -72,12 +72,16 @@ public class UsuarioEndpont extends AbstractEndpoint<Usuario, UsuarioDao> {
             try {
                 Login login = fromJson(req.body(), Login.class);
 
-
                 Database.open(dsl -> {
-
                     Usuario usuario = new UsuarioDao(dsl).login(login);
-
                     if (usuario == null) {
+                        response.set(401, "Não autorizado", null);
+                    } else if (
+                            !PasswordUtils.validatePassword(
+                                    login.getSenha().toCharArray(),
+                                    Base64.decodeBase64(usuario.getSalt()),
+                                    Base64.decodeBase64(usuario.getSenha()))
+                            ) {
                         response.set(401, "Não autorizado", null);
                     } else {
                         try {
