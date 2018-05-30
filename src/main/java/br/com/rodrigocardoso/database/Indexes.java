@@ -36,7 +36,9 @@ public class Indexes {
     public static final Index ENTIDADE_PKEY = Indexes0.ENTIDADE_PKEY;
     public static final Index TAREFAS_ID_PK = Indexes0.TAREFAS_ID_PK;
     public static final Index TABLE_NAME_ID_UINDEX = Indexes0.TABLE_NAME_ID_UINDEX;
+    public static final Index USUARIOS_EMAIL_UINDEX = Indexes0.USUARIOS_EMAIL_UINDEX;
     public static final Index USUARIOS_ID_PK = Indexes0.USUARIOS_ID_PK;
+    public static final Index USUARIOS_SALT_UINDEX = Indexes0.USUARIOS_SALT_UINDEX;
 
     // -------------------------------------------------------------------------
     // [#1459] distribute members to avoid static initialisers > 64kb
@@ -47,6 +49,8 @@ public class Indexes {
         public static Index ENTIDADE_PKEY = createIndex("entidade_pkey", Entidade.ENTIDADE, new OrderField[] { Entidade.ENTIDADE.ID }, true);
         public static Index TAREFAS_ID_PK = createIndex("tarefas_id_pk", Tarefas.TAREFAS, new OrderField[] { Tarefas.TAREFAS.ID }, true);
         public static Index TABLE_NAME_ID_UINDEX = createIndex("table_name_id_uindex", Usuarios.USUARIOS, new OrderField[] { Usuarios.USUARIOS.ID }, true);
+        public static Index USUARIOS_EMAIL_UINDEX = createIndex("usuarios_email_uindex", Usuarios.USUARIOS, new OrderField[] { Usuarios.USUARIOS.EMAIL }, true);
         public static Index USUARIOS_ID_PK = createIndex("usuarios_id_pk", Usuarios.USUARIOS, new OrderField[] { Usuarios.USUARIOS.ID }, true);
+        public static Index USUARIOS_SALT_UINDEX = createIndex("usuarios_salt_uindex", Usuarios.USUARIOS, new OrderField[] { Usuarios.USUARIOS.SALT }, true);
     }
 }

@@ -2,10 +2,12 @@ package br.com.rodrigocardoso.daos;
 
 import br.com.rodrigocardoso.models.Entidade;
 import org.jooq.DSLContext;
+import org.jooq.SelectJoinStep;
 import org.jooq.impl.TableImpl;
 import org.jooq.impl.UpdatableRecordImpl;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -14,7 +16,7 @@ import java.util.List;
  */
 public abstract class AbstractDao <T extends UpdatableRecordImpl<T>, E extends Entidade> implements IDao {
 
-    private DSLContext dsl;
+    protected DSLContext dsl;
     private TableImpl<T> table;
     private Class<E> model;
 
@@ -60,6 +62,16 @@ public abstract class AbstractDao <T extends UpdatableRecordImpl<T>, E extends E
                 .from(table)
                 .fetch()
                 .into(model);
+    }
+
+    @Override
+    public List<? extends Entidade> getAll(String[] params) {
+        SelectJoinStep<?> step =  dsl
+                .select()
+                .from(table);
+
+        Arrays.asList(params).forEach(step::where);
+        return step.fetch().into(model);
     }
 
     @Override

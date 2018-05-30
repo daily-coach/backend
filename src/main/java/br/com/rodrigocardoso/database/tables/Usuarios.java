@@ -40,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Usuarios extends TableImpl<UsuariosRecord> {
 
-    private static final long serialVersionUID = -1350910129;
+    private static final long serialVersionUID = 185414030;
 
     /**
      * The reference instance of <code>public.usuarios</code>
@@ -86,6 +86,21 @@ public class Usuarios extends TableImpl<UsuariosRecord> {
     public final TableField<UsuariosRecord, String> CELULAR = createField("celular", org.jooq.impl.SQLDataType.VARCHAR(20).nullable(false), this, "");
 
     /**
+     * The column <code>public.usuarios.senha</code>.
+     */
+    public final TableField<UsuariosRecord, String> SENHA = createField("senha", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+
+    /**
+     * The column <code>public.usuarios.email</code>.
+     */
+    public final TableField<UsuariosRecord, String> EMAIL = createField("email", org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false), this, "");
+
+    /**
+     * The column <code>public.usuarios.salt</code>.
+     */
+    public final TableField<UsuariosRecord, String> SALT = createField("salt", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+
+    /**
      * Create a <code>public.usuarios</code> table reference
      */
     public Usuarios() {
@@ -127,7 +142,7 @@ public class Usuarios extends TableImpl<UsuariosRecord> {
      */
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.TABLE_NAME_ID_UINDEX, Indexes.USUARIOS_ID_PK);
+        return Arrays.<Index>asList(Indexes.TABLE_NAME_ID_UINDEX, Indexes.USUARIOS_EMAIL_UINDEX, Indexes.USUARIOS_ID_PK, Indexes.USUARIOS_SALT_UINDEX);
     }
 
     /**

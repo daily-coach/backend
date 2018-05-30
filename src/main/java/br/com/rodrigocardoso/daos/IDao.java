@@ -12,5 +12,6 @@ public interface IDao <E extends Entidade> {
     public Boolean update(Entidade value);
     public E get(Integer id);
     public List<E> getAll();
+    public List<E> getAll(String[] params);
     public Boolean delete(Integer id);
 }

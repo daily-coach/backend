@@ -7,6 +7,7 @@ public class Initializer {
 
     public static void init() {
         new TarefaEndpoint().publish();
+        new UsuarioEndpont().publish();
     }
 
 }

@@ -5,6 +5,7 @@ import br.com.rodrigocardoso.infra.Database;
 import br.com.rodrigocardoso.models.Entidade;
 import br.com.rodrigocardoso.utils.Response;
 import org.jooq.DSLContext;
+import spark.Spark;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,15 @@ public abstract class AbstractEndpoint <E extends Entidade, D extends AbstractDa
 
     @Override()
     public void publish() {
+        this.save();
+        this.update();
+        this.getById();
+        this.getByIdLazy();
+        this.getAll();
+        this.delete();
+    }
+
+    protected void save() {
         post(uri, type, (req, res) -> {
             final Response<Object> response = new Response<>();
             final String body = req.body();
@@ -39,7 +49,8 @@ public abstract class AbstractEndpoint <E extends Entidade, D extends AbstractDa
 
             Database.transaction(dsl -> {
                 try {
-                    this.dao.getDeclaredConstructor(DSLContext.class).newInstance(dsl).save(obj);
+                    Integer id = this.dao.getDeclaredConstructor(DSLContext.class).newInstance(dsl).save(obj);
+                    obj.setId(id);
                     response.set(200, "Post", obj);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -50,7 +61,9 @@ public abstract class AbstractEndpoint <E extends Entidade, D extends AbstractDa
             res.status(response.status);
             return response;
         }, json());
+    }
 
+    protected void update() {
         put(uri, type, (req, res) -> {
             final Response<Object> response = new Response<>();
             final String body = req.body();
@@ -69,7 +82,9 @@ public abstract class AbstractEndpoint <E extends Entidade, D extends AbstractDa
             res.status(response.status);
             return response;
         }, json());
+    }
 
+    protected void getById() {
         get(uri + "/:id", type, (req, res) -> {
             final Response<Object> response = new Response<Object>();
             final Integer id = Integer.parseInt(req.params("id"));
@@ -86,7 +101,9 @@ public abstract class AbstractEndpoint <E extends Entidade, D extends AbstractDa
             res.status(response.status);
             return response;
         }, json());
+    }
 
+    protected void getByIdLazy() {
         get(uri + "/:id/lazy", type, (req, res) -> {
             Integer id = Integer.parseInt(req.params("id"));
 
@@ -98,12 +115,21 @@ public abstract class AbstractEndpoint <E extends Entidade, D extends AbstractDa
             res.status(response.status);
             return response;
         }, json());
+    }
 
+    protected void getAll() {
         get(uri, type, (req, res) -> {
+            final String userId = req.queryParams("user_id");
             final Response<Object> response = new Response<Object>();
             Database.open(dsl -> {
                 try {
-                    List ret = dao.getDeclaredConstructor(DSLContext.class).newInstance(dsl).getAll();
+                    List ret;
+                    if (userId == null) {
+                        ret = dao.getDeclaredConstructor(DSLContext.class).newInstance(dsl).getAll();
+                    } else {
+                        String param = "usuarios_id = " + userId;
+                        ret = dao.getDeclaredConstructor(DSLContext.class).newInstance(dsl).getAll(new String[]{param});
+                    }
                     response.set(200, "Get", ret);
                 } catch (Exception e) {
                     response.set(500, "Error", e);
@@ -113,10 +139,11 @@ public abstract class AbstractEndpoint <E extends Entidade, D extends AbstractDa
             res.status(response.status);
             return response;
         }, json());
+    }
 
-
-        delete(uri + "/:id", type, (req, res) -> {
-            final Response<Object> response = new Response<Object>();
+    protected void delete() {
+        Spark.delete(uri + "/:id", type, (req, res) -> {
+            final Response<Object> response = new Response<>();
             final Integer id = Integer.parseInt(req.params("id"));
 
             Database.transaction(dsl -> {
@@ -131,7 +158,6 @@ public abstract class AbstractEndpoint <E extends Entidade, D extends AbstractDa
             res.status(response.status);
             return response;
         }, json());
-
     }
 
 }

@@ -22,6 +22,7 @@ dependencies {
     compile 'org.jooq:jooq:3.10.4'
     compile 'com.zaxxer:HikariCP:3.1.0'
     compile 'javax.persistence:persistence-api:1.0.2'
+    compile 'com.auth0:java-jwt:3.3.0'
     compile 'org.postgresql:postgresql:9.4-1206-jdbc42'
     jooqRuntime 'postgresql:postgresql:9.1-901.jdbc4'
 }

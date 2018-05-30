@@ -13,6 +13,8 @@ public class Tarefa extends Entidade{
     private String descricao;
     @Column(name = "dia")
     private Integer dia;
+    @Column(name = "usuarios_id")
+    private Integer usuariosId;
 
     public String getTitulo() {
         return titulo;
@@ -38,6 +40,15 @@ public class Tarefa extends Entidade{
 
     public Tarefa setDia(Integer dia) {
         this.dia = dia;
+        return this;
+    }
+
+    public Integer getUsuariosId() {
+        return usuariosId;
+    }
+
+    public Tarefa setUsuariosId(Integer usuariosId) {
+        this.usuariosId = usuariosId;
         return this;
     }
 }
