@@ -87,6 +87,7 @@ public class UsuarioEndpont extends AbstractEndpoint<Usuario, UsuarioDao> {
                         try {
                             usuario.setToken(JwtUtils.createToken(usuario.getEmail()));
                             usuario.setSenha(null);
+                            usuario.setSalt(null);
                             response.set(200, "Autorizado", usuario);
                         } catch (Exception e) {
                             e.printStackTrace();

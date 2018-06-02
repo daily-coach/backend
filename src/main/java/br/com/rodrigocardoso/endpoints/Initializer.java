@@ -25,7 +25,7 @@ public class Initializer {
 
     private static void configureHeaders() {
         options("/*", (req, res) -> {
-            res.header("Access-Control-Allow-Headers", "Content-Type");
+            res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
             return "";
         });
         before((req, res) -> {
