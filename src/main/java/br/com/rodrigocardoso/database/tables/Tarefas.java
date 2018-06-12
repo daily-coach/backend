@@ -40,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tarefas extends TableImpl<TarefasRecord> {
 
-    private static final long serialVersionUID = -1609360988;
+    private static final long serialVersionUID = 1218538698;
 
     /**
      * The reference instance of <code>public.tarefas</code>
@@ -84,11 +84,6 @@ public class Tarefas extends TableImpl<TarefasRecord> {
      * The column <code>public.tarefas.descricao</code>.
      */
     public final TableField<TarefasRecord, String> DESCRICAO = createField("descricao", org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
-
-    /**
-     * The column <code>public.tarefas.dia</code>.
-     */
-    public final TableField<TarefasRecord, Integer> DIA = createField("dia", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>public.tarefas.usuarios_id</code>.

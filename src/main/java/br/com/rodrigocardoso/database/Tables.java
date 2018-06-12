@@ -4,8 +4,10 @@
 package br.com.rodrigocardoso.database;
 
 
+import br.com.rodrigocardoso.database.tables.Dias;
 import br.com.rodrigocardoso.database.tables.Entidade;
 import br.com.rodrigocardoso.database.tables.Tarefas;
+import br.com.rodrigocardoso.database.tables.TarefasDias;
 import br.com.rodrigocardoso.database.tables.Usuarios;
 
 import javax.annotation.Generated;
@@ -25,6 +27,11 @@ import javax.annotation.Generated;
 public class Tables {
 
     /**
+     * The table <code>public.dias</code>.
+     */
+    public static final Dias DIAS = br.com.rodrigocardoso.database.tables.Dias.DIAS;
+
+    /**
      * The table <code>public.entidade</code>.
      */
     public static final Entidade ENTIDADE = br.com.rodrigocardoso.database.tables.Entidade.ENTIDADE;
@@ -33,6 +40,11 @@ public class Tables {
      * The table <code>public.tarefas</code>.
      */
     public static final Tarefas TAREFAS = br.com.rodrigocardoso.database.tables.Tarefas.TAREFAS;
+
+    /**
+     * The table <code>public.tarefas_dias</code>.
+     */
+    public static final TarefasDias TAREFAS_DIAS = br.com.rodrigocardoso.database.tables.TarefasDias.TAREFAS_DIAS;
 
     /**
      * The table <code>public.usuarios</code>.

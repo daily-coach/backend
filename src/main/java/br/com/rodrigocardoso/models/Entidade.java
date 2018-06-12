@@ -1,6 +1,7 @@
 package br.com.rodrigocardoso.models;
 
 import javax.persistence.Column;
+import javax.persistence.Id;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 
@@ -8,8 +9,7 @@ import java.time.LocalDateTime;
  * Created by rodri on 01/05/2018.
  */
 public class Entidade {
-
-    @Column(name = "id")
+    @Id()
     private Integer id;
     @Column(name = "created")
     private LocalDateTime created;

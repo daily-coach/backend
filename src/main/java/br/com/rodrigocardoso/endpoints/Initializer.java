@@ -21,6 +21,7 @@ public class Initializer {
         configureAuth();
         new TarefaEndpoint().publish();
         new UsuarioEndpont().publish();
+        new DiaEndpoint().publish();
     }
 
     private static void configureHeaders() {
@@ -37,6 +38,10 @@ public class Initializer {
 
     private static void configureAuth() {
         before("/safe/*", (req, res) -> {
+
+            if (req.requestMethod().equals("OPTIONS")) {
+                return;
+            }
 
             Response<Object> response = new Response<>();
             AtomicBoolean noAuth = new AtomicBoolean();

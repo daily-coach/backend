@@ -17,7 +17,7 @@ import static spark.Spark.*;
 /**
  * Created by rodri on 26/05/2018.
  */
-public class UsuarioEndpont extends AbstractEndpoint<Usuario, UsuarioDao> {
+public class UsuarioEndpont extends JooqEndpoint<Usuario, UsuarioDao> {
 
     public UsuarioEndpont() {
         super(Usuario.class, "/safe/usuarios", UsuarioDao.class);

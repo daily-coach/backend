@@ -29,6 +29,11 @@ public class Sequences {
     public static final Sequence<Long> ENTIDADE_ID_SEQ = new SequenceImpl<Long>("entidade_id_seq", Public.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
 
     /**
+     * The sequence <code>public.tarefas_dias_id_seq</code>
+     */
+    public static final Sequence<Long> TAREFAS_DIAS_ID_SEQ = new SequenceImpl<Long>("tarefas_dias_id_seq", Public.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));
+
+    /**
      * The sequence <code>public.usuarios_id_seq</code>
      */
     public static final Sequence<Long> USUARIOS_ID_SEQ = new SequenceImpl<Long>("usuarios_id_seq", Public.PUBLIC, org.jooq.impl.SQLDataType.BIGINT.nullable(false));

@@ -9,6 +9,8 @@ import spark.Spark;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import static br.com.rodrigocardoso.utils.JsonUtils.*;
 import static spark.Spark.*;
@@ -21,6 +23,13 @@ public abstract class AbstractEndpoint <E extends Entidade, D extends AbstractDa
     protected String uri;
     protected String type;
     protected Class<D> dao;
+
+    protected BiConsumer<E, Response<E>> savePersistence;
+    protected BiConsumer<E, Response<E>> updatePersistence;
+    protected BiConsumer<Integer, Response<E>> getByIdPersistence;
+    protected BiConsumer<Integer, Response<E>> getByIdLazyPersistence;
+    protected BiConsumer<Integer, Response<List<E>>> getAllPersistence;
+    protected BiConsumer<Integer, Response<Boolean>> deletePersistence;
 
     private Class<E> typeParameterClass;
 
@@ -43,21 +52,11 @@ public abstract class AbstractEndpoint <E extends Entidade, D extends AbstractDa
 
     protected void save() {
         post(uri, type, (req, res) -> {
-            final Response<Object> response = new Response<>();
+            final Response<E> response = new Response<>();
             final String body = req.body();
             E obj = fromJson(body, typeParameterClass);
 
-            Database.transaction(dsl -> {
-                try {
-                    Integer id = this.dao.getDeclaredConstructor(DSLContext.class).newInstance(dsl).save(obj);
-                    obj.setId(id);
-                    response.set(200, "Post", obj);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    response.set(500, "Erro no sistema", e);
-                }
-            });
-
+            this.savePersistence.accept(obj, response);
             res.status(response.status);
             return response;
         }, json());
@@ -65,20 +64,11 @@ public abstract class AbstractEndpoint <E extends Entidade, D extends AbstractDa
 
     protected void update() {
         put(uri, type, (req, res) -> {
-            final Response<Object> response = new Response<>();
+            final Response<E> response = new Response<>();
             final String body = req.body();
             E obj = fromJson(body, typeParameterClass);
 
-            Database.transaction(dsl -> {
-                try {
-                    this.dao.getDeclaredConstructor(DSLContext.class).newInstance(dsl).update(obj);
-                    response.set(200, "Put", obj);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    response.set(500, "Erro no sistema", e);
-                }
-            });
-
+            this.updatePersistence.accept(obj, response);
             res.status(response.status);
             return response;
         }, json());
@@ -86,18 +76,10 @@ public abstract class AbstractEndpoint <E extends Entidade, D extends AbstractDa
 
     protected void getById() {
         get(uri + "/:id", type, (req, res) -> {
-            final Response<Object> response = new Response<Object>();
+            final Response<E> response = new Response<>();
             final Integer id = Integer.parseInt(req.params("id"));
 
-            Database.open(dsl -> {
-                try {
-                    Object obj = dao.getDeclaredConstructor(DSLContext.class).newInstance(dsl).get(id);
-                    response.set(200, "Get", obj);
-                } catch (Exception e) {
-                    response.set(500, "Error", e);
-                }
-            });
-
+            this.getByIdPersistence.accept(id, response);
             res.status(response.status);
             return response;
         }, json());
@@ -119,23 +101,17 @@ public abstract class AbstractEndpoint <E extends Entidade, D extends AbstractDa
 
     protected void getAll() {
         get(uri, type, (req, res) -> {
-            final String userId = req.queryParams("user_id");
-            final Response<Object> response = new Response<Object>();
-            Database.open(dsl -> {
-                try {
-                    List ret;
-                    if (userId == null) {
-                        ret = dao.getDeclaredConstructor(DSLContext.class).newInstance(dsl).getAll();
-                    } else {
-                        String param = "usuarios_id = " + userId;
-                        ret = dao.getDeclaredConstructor(DSLContext.class).newInstance(dsl).getAll(new String[]{param});
-                    }
-                    response.set(200, "Get", ret);
-                } catch (Exception e) {
-                    response.set(500, "Error", e);
-                }
-            });
+            final String userIdString = req.queryParams("user_id");
+            final Integer userId;
+            if (userIdString != null) {
+                userId = Integer.parseInt(userIdString);
+            } else {
+                userId = null;
+            }
 
+            final Response<List<E>> response = new Response<>();
+
+            this.getAllPersistence.accept(userId, response);
             res.status(response.status);
             return response;
         }, json());
@@ -143,18 +119,10 @@ public abstract class AbstractEndpoint <E extends Entidade, D extends AbstractDa
 
     protected void delete() {
         Spark.delete(uri + "/:id", type, (req, res) -> {
-            final Response<Object> response = new Response<>();
+            final Response<Boolean> response = new Response<>();
             final Integer id = Integer.parseInt(req.params("id"));
 
-            Database.transaction(dsl -> {
-                try {
-                    Object obj = dao.getDeclaredConstructor(DSLContext.class).newInstance(dsl).delete(id);
-                    response.set(200, "Delete", obj);
-                } catch (Exception e) {
-                    response.set(500, "Error", e);
-                }
-            });
-
+            this.deletePersistence.accept(id, response);
             res.status(response.status);
             return response;
         }, json());

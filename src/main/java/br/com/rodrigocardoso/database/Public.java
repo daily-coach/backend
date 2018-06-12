@@ -4,8 +4,10 @@
 package br.com.rodrigocardoso.database;
 
 
+import br.com.rodrigocardoso.database.tables.Dias;
 import br.com.rodrigocardoso.database.tables.Entidade;
 import br.com.rodrigocardoso.database.tables.Tarefas;
+import br.com.rodrigocardoso.database.tables.TarefasDias;
 import br.com.rodrigocardoso.database.tables.Usuarios;
 
 import java.util.ArrayList;
@@ -33,12 +35,17 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Public extends SchemaImpl {
 
-    private static final long serialVersionUID = -117953631;
+    private static final long serialVersionUID = -2141659171;
 
     /**
      * The reference instance of <code>public</code>
      */
     public static final Public PUBLIC = new Public();
+
+    /**
+     * The table <code>public.dias</code>.
+     */
+    public final Dias DIAS = br.com.rodrigocardoso.database.tables.Dias.DIAS;
 
     /**
      * The table <code>public.entidade</code>.
@@ -49,6 +56,11 @@ public class Public extends SchemaImpl {
      * The table <code>public.tarefas</code>.
      */
     public final Tarefas TAREFAS = br.com.rodrigocardoso.database.tables.Tarefas.TAREFAS;
+
+    /**
+     * The table <code>public.tarefas_dias</code>.
+     */
+    public final TarefasDias TAREFAS_DIAS = br.com.rodrigocardoso.database.tables.TarefasDias.TAREFAS_DIAS;
 
     /**
      * The table <code>public.usuarios</code>.
@@ -81,6 +93,7 @@ public class Public extends SchemaImpl {
     private final List<Sequence<?>> getSequences0() {
         return Arrays.<Sequence<?>>asList(
             Sequences.ENTIDADE_ID_SEQ,
+            Sequences.TAREFAS_DIAS_ID_SEQ,
             Sequences.USUARIOS_ID_SEQ);
     }
 
@@ -93,8 +106,10 @@ public class Public extends SchemaImpl {
 
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
+            Dias.DIAS,
             Entidade.ENTIDADE,
             Tarefas.TAREFAS,
+            TarefasDias.TAREFAS_DIAS,
             Usuarios.USUARIOS);
     }
 }

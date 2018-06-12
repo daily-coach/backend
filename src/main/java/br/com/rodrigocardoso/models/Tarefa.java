@@ -1,18 +1,24 @@
 package br.com.rodrigocardoso.models;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.util.Set;
 
 /**
  * Created by rodri on 08/05/2018.
  */
+@Entity
+@Table(name = "tarefas")
 public class Tarefa extends Entidade{
 
     @Column(name = "titulo")
     private String titulo;
     @Column(name = "descricao")
     private String descricao;
-    @Column(name = "dia")
-    private Integer dia;
+    @OneToMany(mappedBy = "tarefas")
+    private Set<TarefaDia> tarefaDias;
     @Column(name = "usuarios_id")
     private Integer usuariosId;
 
@@ -34,12 +40,12 @@ public class Tarefa extends Entidade{
         return this;
     }
 
-    public Integer getDia() {
-        return dia;
+    public Set<TarefaDia> getTarefaDias() {
+        return tarefaDias;
     }
 
-    public Tarefa setDia(Integer dia) {
-        this.dia = dia;
+    public Tarefa setTarefaDias(Set<TarefaDia> tarefaDias) {
+        this.tarefaDias = tarefaDias;
         return this;
     }
 

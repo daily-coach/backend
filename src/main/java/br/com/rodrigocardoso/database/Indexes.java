@@ -4,8 +4,10 @@
 package br.com.rodrigocardoso.database;
 
 
+import br.com.rodrigocardoso.database.tables.Dias;
 import br.com.rodrigocardoso.database.tables.Entidade;
 import br.com.rodrigocardoso.database.tables.Tarefas;
+import br.com.rodrigocardoso.database.tables.TarefasDias;
 import br.com.rodrigocardoso.database.tables.Usuarios;
 
 import javax.annotation.Generated;
@@ -32,9 +34,11 @@ public class Indexes {
     // INDEX definitions
     // -------------------------------------------------------------------------
 
+    public static final Index TAREFAS_DIAS_PKEY = Indexes0.TAREFAS_DIAS_PKEY;
     public static final Index ENTIDADE_ID_UINDEX = Indexes0.ENTIDADE_ID_UINDEX;
     public static final Index ENTIDADE_PKEY = Indexes0.ENTIDADE_PKEY;
     public static final Index TAREFAS_ID_PK = Indexes0.TAREFAS_ID_PK;
+    public static final Index TAREFAS_DIAS_ID_PK = Indexes0.TAREFAS_DIAS_ID_PK;
     public static final Index TABLE_NAME_ID_UINDEX = Indexes0.TABLE_NAME_ID_UINDEX;
     public static final Index USUARIOS_EMAIL_UINDEX = Indexes0.USUARIOS_EMAIL_UINDEX;
     public static final Index USUARIOS_ID_PK = Indexes0.USUARIOS_ID_PK;
@@ -45,9 +49,11 @@ public class Indexes {
     // -------------------------------------------------------------------------
 
     private static class Indexes0 extends AbstractKeys {
+        public static Index TAREFAS_DIAS_PKEY = createIndex("tarefas_dias_pkey", Dias.DIAS, new OrderField[] { Dias.DIAS.ID }, true);
         public static Index ENTIDADE_ID_UINDEX = createIndex("entidade_id_uindex", Entidade.ENTIDADE, new OrderField[] { Entidade.ENTIDADE.ID }, true);
         public static Index ENTIDADE_PKEY = createIndex("entidade_pkey", Entidade.ENTIDADE, new OrderField[] { Entidade.ENTIDADE.ID }, true);
         public static Index TAREFAS_ID_PK = createIndex("tarefas_id_pk", Tarefas.TAREFAS, new OrderField[] { Tarefas.TAREFAS.ID }, true);
+        public static Index TAREFAS_DIAS_ID_PK = createIndex("tarefas_dias_id_pk", TarefasDias.TAREFAS_DIAS, new OrderField[] { TarefasDias.TAREFAS_DIAS.ID }, true);
         public static Index TABLE_NAME_ID_UINDEX = createIndex("table_name_id_uindex", Usuarios.USUARIOS, new OrderField[] { Usuarios.USUARIOS.ID }, true);
         public static Index USUARIOS_EMAIL_UINDEX = createIndex("usuarios_email_uindex", Usuarios.USUARIOS, new OrderField[] { Usuarios.USUARIOS.EMAIL }, true);
         public static Index USUARIOS_ID_PK = createIndex("usuarios_id_pk", Usuarios.USUARIOS, new OrderField[] { Usuarios.USUARIOS.ID }, true);
